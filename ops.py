@@ -2,9 +2,13 @@ import tensorflow as tf
 
 
 
-def conv2d(inputs, filters, kernel_size=3, strides=1, padding = "SAME", name="conv_2d"):
-	return tf.layers.conv2d(inputs=inputs, filters=filters, kernel_size=kernel_size, strides=strides,\
-	 padding=padding,name=name)
+def conv2d(inputs, filters, kernel_size=3, strides=1, padding="SAME", name="conv_2d"):
+	return tf.layers.conv2d(inputs=inputs,
+                         filters=filters,
+                         kernel_size=kernel_size,
+                         strides=strides,
+                         padding=padding,
+                         name=name)
 
 def batch_normalization(x, n_out=4, is_train=True, scope='bn'):
 	with tf.variable_scope(scope):
@@ -26,9 +30,14 @@ def batch_normalization(x, n_out=4, is_train=True, scope='bn'):
 def relu(x):
 	return tf.nn.relu(x)
 
-def bn_relu_conv(x, filters, kernel_size, strides):
+def bn_relu_conv(x, filters, kernel_size, strides=1):
 	x = batch_normalization(x)
 	x = relu(x)
 	x = conv2d(x, filters, kernel_size, strides)
 	return x
 
+def mox_polling(x,kernel_size=3, strides=2, padding='SAME'):
+    return tf.nn.max_pool(x,
+                          ksize=[1, kernel_size, kernel_size, 1],
+                          strides=[1, strides, strides, 1],
+                          padding='SAME'))
